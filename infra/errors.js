@@ -5,7 +5,7 @@ export class InternalServerError extends Error {
     });
     this.name = "InternalServerError";
     this.action = "Entre em contato com o suporte";
-    this.statusCode = statusCode || 503;
+    this.statusCode = statusCode || 500;
   }
 
   toJSON() {
@@ -86,6 +86,26 @@ export class NotFoundError extends Error {
     this.action =
       action || "Verifique se os parametros enviados na consulta estão certos.";
     this.statusCode = 404;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      statusCode: this.statusCode,
+    };
+  }
+}
+
+export class UnauthorizedError extends Error {
+  constructor({ cause, message, action }) {
+    super(message || "Usuário não autenticado.", {
+      cause,
+    });
+    this.name = "UnauthorizedError";
+    this.action = action || "Faça login novamente para continuar.";
+    this.statusCode = 401;
   }
 
   toJSON() {
